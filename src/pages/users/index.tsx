@@ -17,7 +17,7 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 
-//this is the page to create new user or to list the users
+//this is the page to create to list the users
 export default function UserList() {
     return (
         <Box>
