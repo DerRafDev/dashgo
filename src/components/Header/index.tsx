@@ -1,4 +1,6 @@
-import { Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react';
+import { RiMenuLine } from 'react-icons/ri';
+import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 import { Logo } from './Logo';
 import { NotificationsNav } from './NotificationsNav';
@@ -8,6 +10,9 @@ import { SearchBox } from './SearchBox';
 
 //this will be the Header of our application
 export function Header() {
+    //this is to open the Sidebar on mobile
+    const { onOpen } = useSidebarDrawer()
+
     //this is for when is in Mobile, just show the Avatar
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -26,6 +31,20 @@ export function Header() {
             px="6"
             align="center"
         >
+
+            { !isWideVersion && (
+                <IconButton
+                    aria-label="Open navigation"
+                    icon={<Icon as={RiMenuLine} />}
+                    fontSize="24"
+                    variant="unstyled"
+                    onClick={onOpen}
+                    mr="2"
+                >
+
+                </IconButton>
+            ) }
+
             <Logo />
 
             
