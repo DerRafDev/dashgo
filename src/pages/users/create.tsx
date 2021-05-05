@@ -8,6 +8,7 @@ import {
     HStack,
     Button,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 import { Input } from "../../components/Form/Input";
 
@@ -47,7 +48,9 @@ export default function CreateUser() {
 
                     <Flex mt="8" justify="flex-end">
                         <HStack spaing="4">
-                            <Button colorScheme="whiteAlpha">Cancel</Button>
+                            <Link href="/users" passHref>
+                                <Button as="a" colorScheme="whiteAlpha">Cancel</Button>
+                            </Link>
                             <Button colorScheme="pink">Save</Button>
                         </HStack>
                     </Flex>
