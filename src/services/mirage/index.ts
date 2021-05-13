@@ -41,10 +41,10 @@ export function makeServer() {
             this.get('/users');
             this.post('/users');
 
-            this.namespace = '' // reset routes namespace
-            this.passthrough()
+            this.namespace = ''; // reset routes namespace
+            this.passthrough();
         }
     })
 
-    return server
+    return server;
 }

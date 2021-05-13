@@ -1,48 +1,46 @@
-import { useEffect } from "react";
-
 import Link from "next/link";
 
-import { 
-    Box, 
-    Flex, 
-    Heading, 
-    Button, 
-    Icon, 
-    Table, 
-    Thead, 
-    Tr, Th, 
-    Td, 
-    Checkbox, 
-    Tbody, 
+import {
+    Box,
+    Flex,
+    Heading,
+    Button,
+    Icon,
+    Table,
+    Thead,
+    Tr, Th,
+    Td,
+    Checkbox,
+    Tbody,
     Text,
-    useBreakpointValue, 
+    Spinner,
+    useBreakpointValue,
 } from "@chakra-ui/react";
 
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
+import { useQuery } from 'react-query';
 
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
+import { useEffect } from "react";
 
 //this is the page to create to list the users
 export default function UserList() {
+
+    //this is to get our API
+    const { data, isLoading, error } = useQuery('users', async () => {
+        const response = await fetch('http://localhost:3000/users')
+        const data = await response.json()
+
+        return data;
+    })
 
     //this is for responsivity
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true,
     })
-
-    //this is to get our API
-    useEffect(() => {
-        fetch('http://localhost:3000/users')
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch(err => { 
-              console.log("error reading data" + err);
-          })
-    }, [])
-    
 
     return (
         <Box>
@@ -66,93 +64,105 @@ export default function UserList() {
                             </Button>
                         </Link>
                     </Flex>
-                
-                    <Table colorScheme="whiteAlpha">
-                        <Thead>
-                            <Tr>
-                                <Th px={["4", "4", "6"]} color="gray.300" w="8">
-                                    <Checkbox colorScheme="pink" />
-                                </Th>
-                                <Th>User</Th>
-                                { isWideVersion && <Th>Registration date</Th> }
-                                <Th w="8"></Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            <Tr>
-                                <Td px={["4", "4", "6"]}>
-                                    <Checkbox colorScheme="pink" />
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight="bold">Der RafDev</Text>
-                                        <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
-                                    </Box>
-                                </Td>
-                                { isWideVersion && <Td> 04 of April, 2021</Td> }
-                                { isWideVersion && <Td>
-                                    <Button
-                                        as="a" 
-                                        size="sm" 
-                                        fontSize="sm" 
-                                        colorScheme="purple"
-                                        leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                                    >
-                                        Edit
-                                    </Button>
-                                </Td> }
-                            </Tr>
-                            <Tr>
-                                <Td px={["4", "4", "6"]}>
-                                    <Checkbox colorScheme="pink" />
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight="bold">Der RafDev</Text>
-                                        <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
-                                    </Box>
-                                </Td>
-                                { isWideVersion && <Td> 04 of April, 2021</Td> }
-                                { isWideVersion && <Td>
-                                    <Button
-                                        as="a" 
-                                        size="sm" 
-                                        fontSize="sm" 
-                                        colorScheme="purple"
-                                        leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                                    >
-                                        Edit
-                                    </Button>
-                                </Td> }
-                            </Tr>
-                            <Tr>
-                                <Td px={["4", "4", "6"]}>
-                                    <Checkbox colorScheme="pink" />
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight="bold">Der RafDev</Text>
-                                        <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
-                                    </Box>
-                                </Td>
-                                { isWideVersion && <Td> 04 of April, 2021</Td> }
-                                { isWideVersion && <Td>
-                                    <Button
-                                        as="a" 
-                                        size="sm" 
-                                        fontSize="sm" 
-                                        colorScheme="purple"
-                                        leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                                    >
-                                        Edit
-                                    </Button>
-                                </Td> }
-                            </Tr>
 
-                        </Tbody>
-                    </Table>
+                    {isLoading ? (
+                        <Flex justify="center">
+                            <Spinner />
+                        </Flex>
+                    ) : error ? (
+                        <Flex justify="center">
+                            <Text>Error to get the User data.</Text>
+                        </Flex>
+                    ) : (
+                        <>
+                            <Table colorScheme="whiteAlpha">
+                                <Thead>
+                                    <Tr>
+                                        <Th px={["4", "4", "6"]} color="gray.300" w="8">
+                                            <Checkbox colorScheme="pink" />
+                                        </Th>
+                                        <Th>User</Th>
+                                        {isWideVersion && <Th>Registration date</Th>}
+                                        <Th w="8"></Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    <Tr>
+                                        <Td px={["4", "4", "6"]}>
+                                            <Checkbox colorScheme="pink" />
+                                        </Td>
+                                        <Td>
+                                            <Box>
+                                                <Text fontWeight="bold">Der RafDev</Text>
+                                                <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
+                                            </Box>
+                                        </Td>
+                                        {isWideVersion && <Td> 04 of April, 2021</Td>}
+                                        {isWideVersion && <Td>
+                                            <Button
+                                                as="a"
+                                                size="sm"
+                                                fontSize="sm"
+                                                colorScheme="purple"
+                                                leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                                            >
+                                                Edit
+                                    </Button>
+                                        </Td>}
+                                    </Tr>
+                                    <Tr>
+                                        <Td px={["4", "4", "6"]}>
+                                            <Checkbox colorScheme="pink" />
+                                        </Td>
+                                        <Td>
+                                            <Box>
+                                                <Text fontWeight="bold">Der RafDev</Text>
+                                                <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
+                                            </Box>
+                                        </Td>
+                                        {isWideVersion && <Td> 04 of April, 2021</Td>}
+                                        {isWideVersion && <Td>
+                                            <Button
+                                                as="a"
+                                                size="sm"
+                                                fontSize="sm"
+                                                colorScheme="purple"
+                                                leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                                            >
+                                                Edit
+                                    </Button>
+                                        </Td>}
+                                    </Tr>
+                                    <Tr>
+                                        <Td px={["4", "4", "6"]}>
+                                            <Checkbox colorScheme="pink" />
+                                        </Td>
+                                        <Td>
+                                            <Box>
+                                                <Text fontWeight="bold">Der RafDev</Text>
+                                                <Text fontSize="sm" color="gray.300">derRaf@example.com</Text>
+                                            </Box>
+                                        </Td>
+                                        {isWideVersion && <Td> 04 of April, 2021</Td>}
+                                        {isWideVersion && <Td>
+                                            <Button
+                                                as="a"
+                                                size="sm"
+                                                fontSize="sm"
+                                                colorScheme="purple"
+                                                leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                                            >
+                                                Edit
+                                    </Button>
+                                        </Td>}
+                                    </Tr>
 
-                    <Pagination />
+                                </Tbody>
+                            </Table>
+
+                            <Pagination />
+                        </>
+                    )}
                 </Box>
             </Flex>
         </Box>
