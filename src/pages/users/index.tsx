@@ -49,6 +49,10 @@ export default function UserList() {
         });
 
         return users;
+    }, {
+        //this is for be in fresh for 5s, this way, if you change windows during
+        //this time, it will not refresh the data
+        staleTime: 1000 * 5, //5 s
     })
 
     //this is for responsivity
