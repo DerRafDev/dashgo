@@ -18,41 +18,17 @@ import {
 } from "@chakra-ui/react";
 
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
-import { useQuery } from 'react-query';
 
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
-import { api } from "../../services/api";
+import { useUsers } from "../../services/hooks/useUsers";
 
 //this is the page to create to list the users
 export default function UserList() {
 
     //this is to get our API
-    const { data, isLoading, isFetching, error } = useQuery('users', async () => {
-        const { data } = await api.get('users')
-
-        //this is to format the date
-        const users = data.users.map(user => {
-            return {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                createdAt: new Date(user.createdAt).toLocaleDateString('en-US', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                })
-
-            }
-        });
-
-        return users;
-    }, {
-        //this is for be in fresh for 5s, this way, if you change windows during
-        //this time, it will not refresh the data
-        staleTime: 1000 * 5, //5 s
-    })
+    const { data, isLoading, isFetching, error } = useUsers()
 
     //this is for responsivity
     const isWideVersion = useBreakpointValue({
