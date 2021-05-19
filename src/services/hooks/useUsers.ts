@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { api } from '../api';
 
 type User = {
@@ -44,10 +44,11 @@ export async function getUsers(page: number): Promise<GetUsersResponse> {
 }
 
 //this will return the users
-export function useUsers(page: number) {
+export function useUsers(page: number)  { //options: UseQueryOptions) {
     return  useQuery(['users', page], () => getUsers(page), {
         //this is for be in fresh for 5s, this way, if you change windows during
         //this time, it will not refresh the data
         staleTime: 1000 * 60 * 10, //10 minutes
+        //...options,
     })
 }
